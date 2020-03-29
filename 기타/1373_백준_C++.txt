@@ -1,0 +1,34 @@
+﻿#include <iostream>
+#include <math.h>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+int main() {
+
+	string s;
+	cin >> s;
+
+	int cnt = s.size();
+
+	int sum = 0;
+	for (int i = cnt; i >= 0; i--) {
+		if (s[cnt - i] == '1') {
+			sum += pow(2, i-1);
+		}
+	}
+
+	stack<int> st;
+
+	while (sum > 0) {
+		st.push(sum % 8);
+		sum /= 8;
+	}
+
+	while(!st.empty()) {
+		printf("%d", st.top());
+		st.pop();
+	}
+
+}
