@@ -1,0 +1,54 @@
+﻿#include <iostream>
+
+using namespace std;
+
+int dx[4] = { -1,0,1,0 };
+int dy[4] = { 0,1,0,-1 };
+
+int map[101][101];
+int visit[101][101];
+
+int n, m;
+int rst = 99999;
+int cnt = 0;
+int min(int a, int b) {
+	return a > b ? b : a;
+}
+void dfs(int x, int y) {
+	//printf("%d %d\n", y, x);
+	int i, xx, yy;
+	cnt++;
+	if (x == n && y == m) {
+		rst = min(rst, cnt);
+		return;
+	}
+	else {
+		for (i = 0; i < 4; i++) {
+			xx = x + dx[i];
+			yy = y + dy[i];
+			if (xx<1 || xx>n || yy < 1 || yy > m) continue;
+			if (map[xx][yy] == 1 && visit[xx][yy] == 0) {
+				visit[xx][yy] = 1; 
+				dfs(xx, yy);
+				visit[xx][yy] = 0; 
+				cnt--; // 만약 다시 이전으로 돌아갈시에는 cnt을 하나 뺀다
+			}
+		}
+	}
+}
+int main() {
+	scanf("%d %d", &n, &m);
+	
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			char c;
+			cin >> c;
+			map[i][j] = c - 48;
+		}
+	}
+
+	visit[1][1] = 1;
+	dfs(1, 1);
+
+	cout << rst;
+}
