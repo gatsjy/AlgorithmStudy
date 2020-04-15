@@ -1,58 +1,50 @@
-﻿#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
+﻿#include <iostream>
 
 using namespace std;
 
 int tree[26][2];
 
-void pre(int n) {
-	if (n == -1) return;
-	cout << char(n + 'A');
-	pre(tree[n][0]);
-	pre(tree[n][1]);
+// 전위순회 : 루트 노드를 먼저
+void pre(int v) {
+	if (v == -1)return;
+	printf("%c", v + 'A');
+	pre(tree[v][0]);
+	pre(tree[v][1]);
 }
 
-void in(int n) {
-	if (n == -1) return;
-	in(tree[n][0]);
-	cout << char(n + 'A');
-	in(tree[n][1]);
+// 중위순회 : 루트 노드를 중간
+void in(int v) {
+	if (v == -1)return;
+	in(tree[v][0]);
+	printf("%c", v + 'A');
+	in(tree[v][1]);
 }
 
-void post(int n) {
-	if (n == -1) return;
-	post(tree[n][0]);
-	post(tree[n][1]);
-	cout << char(n + 'A');
+// 후위순회 : 루트 노드를 마지막에
+void post(int v) {
+	if (v == -1)return;
+	post(tree[v][0]);
+	post(tree[v][1]);
+	printf("%c", v + 'A');
 }
 
 int main() {
 	int n;
 	cin >> n;
-	while (n--) {
-		char node, left, right;
 
-		cin >> node >> left >> right;
+	for (int i = 0; i < n; i++) {
+		char root, left, right;
+		cin >> root >> left >> right;
 
-		if (left != '.') {
-			tree[node - 'A'][0] = left - 'A';
-		}
-		else {
-			tree[node - 'A'][0] = -1;
-		}
-
-		if (right != '.') {
-			tree[node - 'A'][1] = right - 'A';
-		}
-		else {
-			tree[node - 'A'][1] = -1;
-		}
+		// 왼쪽 넣기
+		tree[root - 'A'][0] = left != '.' ? left - 'A' : -1;
+		// 오른쪽 넣기
+		tree[root - 'A'][1] = right != '.' ? right - 'A' : -1;
 	}
 
 	pre(0);
-	cout << endl;
+	printf("\n");
 	in(0);
-	cout << endl;
+	printf("\n");
 	post(0);
 }
