@@ -2,49 +2,44 @@
 
 using namespace std;
 
-int tree[26][2];
+int dx[4] = {0,1,0,-1};
+int dy[4] = {-1,0,1,0};
 
-// 전위순회 : 루트 노드를 먼저
-void pre(int v) {
-	if (v == -1)return;
-	printf("%c", v + 'A');
-	pre(tree[v][0]);
-	pre(tree[v][1]);
-}
+int map[25][25];
+bool ch[25][25];
 
-// 중위순회 : 루트 노드를 중간
-void in(int v) {
-	if (v == -1)return;
-	in(tree[v][0]);
-	printf("%c", v + 'A');
-	in(tree[v][1]);
-}
-
-// 후위순회 : 루트 노드를 마지막에
-void post(int v) {
-	if (v == -1)return;
-	post(tree[v][0]);
-	post(tree[v][1]);
-	printf("%c", v + 'A');
+int n;
+dfs(int y, int x) {
+	if (ch[y][x] == 1 || map[y][x] == 0) return;
+	ch[y][x] = 1;
+	for (int i = 0; i < n; i++) {
+		int xx = x + dx[i];
+		int yy = y + dy[i];
+		if (xx > 0 && xx < n && yy >0 && yy < n) {
+			dfs(yy, xx);
+		}
+	}
 }
 
 int main() {
-	int n;
+	
 	cin >> n;
 
 	for (int i = 0; i < n; i++) {
-		char root, left, right;
-		cin >> root >> left >> right;
-
-		// 왼쪽 넣기
-		tree[root - 'A'][0] = left != '.' ? left - 'A' : -1;
-		// 오른쪽 넣기
-		tree[root - 'A'][1] = right != '.' ? right - 'A' : -1;
+		for (int j = 0; j < n; j++) {
+			cin >> map[i][j];
+		}
 	}
 
-	pre(0);
-	printf("\n");
-	in(0);
-	printf("\n");
-	post(0);
+	int cnt = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++){
+			if (ch[i][j] == 0 && map[i][j] == 1) {
+				dfs(i, j);
+				cnt++;
+			}
+		}
+	}
+
+	cout << cnt;
 }
